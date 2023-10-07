@@ -1,5 +1,6 @@
 #include "Batiment.hpp"
 
-Batiment::Batiment(std::string pathTexture) : Entite(pathTexture) {}
+Batiment::Batiment(Entite::Type type, const sf::Vector2f &scale)
+    : Entite(type, scale) {}
 
 Batiment::~Batiment() {}

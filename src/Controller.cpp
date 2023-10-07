@@ -5,7 +5,10 @@ Controller *Controller::_instance = nullptr;
 /****************************************************/
 /*                 Instanciation                    */
 /****************************************************/
-Controller::Controller(/* args */) {}
+Controller::Controller()
+    : _fenetre{}, _largeurFenetre()
+{
+}
 
 Controller::~Controller()
 {
@@ -72,9 +75,17 @@ void Controller::dessinerFenetre()
 /****************************************************/
 /****************************************************/
 
-void Controller::InitController() {}
+void Controller::InitController()
+{
+    Entite::chargerTextures();
+}
 
-void Controller::InitGame() {}
+void Controller::InitGame()
+{
+    std::string path = "ressources/Bleu_luge.png";
+    // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
+    _allBatiments.push_back(std::move(Batiment(Entite::Type::Igloo, sf::Vector2f(0.01f, 0.01f))));
+}
 
 void Controller::Run()
 {
@@ -95,6 +106,9 @@ void Controller::Run()
 
             case sf::Event::MouseMoved:
                 break;
+            case sf::Event::MouseButtonPressed:
+                boutonSourisPresse();
+                break;
             case sf::Event::MouseButtonReleased:
                 break;
 
@@ -103,6 +117,21 @@ void Controller::Run()
             }
         }
 
+        dessinerFenetre();
         afficherFenetre();
+    }
+}
+
+void Controller::boutonSourisPresse()
+{
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+    {
+        sf::Vector2i mousePosition = sf::Mouse::getPosition();
+        for (int i = 0; i < _allBatiments.size(); i++)
+        {
+            sf::FloatRect zoneBat = _allBatiments[i].getGlobalBounds();
+            if (zoneBat.contains(mousePosition.x, mousePosition.y))
+                std::cout << "dedans" << std::endl;
+        }
     }
 }

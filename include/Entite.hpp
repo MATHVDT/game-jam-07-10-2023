@@ -12,13 +12,38 @@
 
 namespace fs = std::filesystem;
 
+#define NB_TYPE_ENTITE 7
+
 class Entite
 {
+public:
+    enum class Type : uint
+    {
+        PingouinBleu,
+        LugeurBleu,
+        PingouinRouge,
+        LugeurRouge,
+
+        Igloo,   // Batiment de base
+        Magasin, // Batiment donnant des skieurs
+        Glacier, // Batiment défensive
+    };
+
+private: // static
+    static sf::Texture _textures[NB_TYPE_ENTITE];
+    static std::map<Type, std::string> pathTextures;
+
+public: // static
+    static void chargerTextures();
+    // void dechargerTextures();
+
 protected:
-    sf::Sprite *_sprite;
+    Entite::Type _type;
+    sf::Sprite _sprite;
+    sf::Vector2f _scale;
 
 public:
-    Entite(std::string pathTexture);
+    Entite(Entite::Type type, const sf::Vector2f &scale);
     ~Entite();
 
     // Position
@@ -27,7 +52,7 @@ public:
     void move(const sf::Vector2f &offset);
 
     sf::FloatRect getGlobalBounds() const;
-    const sf::Sprite *getSprite() const;
+    const sf::Sprite &getSprite() const;
 
     virtual void Update() = 0;
 
@@ -38,11 +63,11 @@ private:
 /****************************************************/
 /*                  Méthodes inline                 */
 /****************************************************/
-inline const sf::Vector2f &Entite::getPosition() const { return _sprite->getPosition(); }
-inline void Entite::setPosition(const sf::Vector2f &newPosition) { _sprite->setPosition(newPosition); }
-inline void Entite::move(const sf::Vector2f &offset) { _sprite->move(offset); }
+inline const sf::Vector2f &Entite::getPosition() const { return _sprite.getPosition(); }
+inline void Entite::setPosition(const sf::Vector2f &newPosition) { _sprite.setPosition(newPosition); }
+inline void Entite::move(const sf::Vector2f &offset) { _sprite.move(offset); }
 
-inline sf::FloatRect Entite::getGlobalBounds() const { return _sprite->getGlobalBounds(); }
-inline const sf::Sprite *Entite::getSprite() const { return _sprite; }
+inline sf::FloatRect Entite::getGlobalBounds() const { return _sprite.getGlobalBounds(); }
+inline const sf::Sprite &Entite::getSprite() const { return _sprite; }
 
 #endif
