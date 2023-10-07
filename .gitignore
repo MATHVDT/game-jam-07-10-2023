@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Environnement vscode
+.vscode
