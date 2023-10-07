@@ -29,6 +29,11 @@ private:
 public:
     ~Controller();
 
+    void InitController();
+    void InitGame();
+
+    void Run();
+
     // Fenetre
     void InitFenetre(uint largeurFenetre, uint hauteurFenetre);
     void dessiner(const sf::Drawable &dessinable);

@@ -5,9 +5,7 @@ Controller *Controller::_instance = nullptr;
 /****************************************************/
 /*                 Instanciation                    */
 /****************************************************/
-Controller::Controller(/* args */)
-{
-}
+Controller::Controller(/* args */) {}
 
 Controller::~Controller()
 {
@@ -63,3 +61,38 @@ void Controller::afficherFenetre()
 }
 /****************************************************/
 /****************************************************/
+
+void Controller::InitController() {}
+
+void Controller::InitGame() {}
+
+void Controller::Run()
+{
+    InitFenetre();
+    InitController();
+    InitGame();
+
+    while (_fenetre.isOpen())
+    {
+        sf::Event event;
+        while (_fenetre.pollEvent(event))
+        {
+            switch (event.type)
+            {
+            case sf::Event::Closed:
+                _fenetre.close();
+                break;
+
+            case sf::Event::MouseMoved:
+                break;
+            case sf::Event::MouseButtonReleased:
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        afficherFenetre();
+    }
+}
