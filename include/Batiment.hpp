@@ -8,8 +8,10 @@ class Batiment : public Entite
 private:
     /* data */
 public:
-    Batiment(std::string pathTexture);
+    Batiment(Entite::Type type, const sf::Vector2f &scale);
     ~Batiment();
+
+    virtual void Update() {}
 };
 
 #endif

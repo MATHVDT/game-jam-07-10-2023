@@ -6,6 +6,7 @@
 #include <list>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
 #include "Batiment.hpp"
@@ -31,6 +32,8 @@ private:
     std::list<Batiment *> _playerBatiments;
     std::list<Batiment *> _EnemyBatiments;
 
+    Batiment *_batimentSelect;
+
 public:
     ~Controller();
 
@@ -45,6 +48,8 @@ public:
     void dessiner(const sf::Drawable *dessinable);
     void dessinerFenetre();
     void afficherFenetre();
+
+    void boutonSourisPresse();
 
 private:
     Controller();
