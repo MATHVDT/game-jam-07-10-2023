@@ -30,7 +30,7 @@ int main()
     
     Map map = Map(positions, links);
     
-    Soldat soldat = Soldat(0, 5, 1, map);
+    Soldat soldat = Soldat(0, sf::Vector2f(5,0), 1, map);
    
     return 0;
 }
