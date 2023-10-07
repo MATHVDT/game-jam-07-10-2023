@@ -7,13 +7,13 @@ int main()
     Controller *controller = Controller::getInstance();
 
     controller->InitFenetre(1920 / 2, 1080 / 2);
+    
+    sf::CircleShape shape(50.f);
+    shape.setFillColor(sf::Color(150, 50, 250));
+    controller->dessiner(shape);
+    controller->afficherFenetre();
 
-    while (1)
-    {
-        // Pause for 2 seconds
-        sf::sleep(sf::seconds(2));
-        controller->afficherFenetre();
-    }
+    sf::sleep(sf::seconds(5));
 
     return 0;
 }
