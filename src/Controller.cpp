@@ -16,6 +16,7 @@ Controller::~Controller()
 
 Controller *Controller::getInstance()
 {
+    
     if (Controller::_instance == nullptr)
     {
         Controller::_instance = new Controller();
