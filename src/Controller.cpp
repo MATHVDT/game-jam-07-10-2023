@@ -59,6 +59,15 @@ void Controller::afficherFenetre()
     _fenetre.display();
     _fenetre.clear();
 }
+
+void Controller::dessinerFenetre()
+{
+    for (Batiment &bat : _allBatiments)
+    {
+        dessiner(bat.getSprite());
+    }
+}
+
 /****************************************************/
 /****************************************************/
 
@@ -68,7 +77,7 @@ void Controller::InitGame() {}
 
 void Controller::Run()
 {
-    InitFenetre();
+    InitFenetre(1920 / 2, 1080 / 2);
     InitController();
     InitGame();
 
