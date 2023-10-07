@@ -1,13 +1,13 @@
 # game-jam-07-10-2023
 
 **Date :** 07-08 octobre 2023   
-**Thème :** 
+**Thème :** Usure
 **Nom du jeu :** 
 **Type de jeu :**   
 
 ---
 ## Membre de l'équipe :
-
+CHEVALIER Alexandre
 VILLEDIEU DE TORCY Mathieu    
 
 ---
