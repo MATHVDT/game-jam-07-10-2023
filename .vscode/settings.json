@@ -44,6 +44,10 @@
         "typeinfo": "cpp",
         "ctime": "cpp",
         "map": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "chrono": "cpp",
+        "codecvt": "cpp",
+        "list": "cpp",
+        "ratio": "cpp"
     }
 }
