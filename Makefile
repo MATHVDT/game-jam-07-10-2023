@@ -17,7 +17,7 @@ CXXFLAGS+= -MMD -g $(OPTIMISATION) -fdiagnostics-color=auto -I $(DOSSIER_INCLUDE
 
 # -L $(DOSSIER_LIB)
 
-LDSFML= -L $(DOSSIER_LIB) -lsfml-graphics -lsfml-window -lsfml-system
+LDSFML=-lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS=  $(LDSFML) 
 
 
