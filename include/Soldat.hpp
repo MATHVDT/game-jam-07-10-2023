@@ -1,21 +1,24 @@
 #ifndef __SOLDAT_HPP__
 #define __SOLDAT_HPP__
 
-#include "Vector2.hpp"
-#include <vector>
+#include "Map.hpp"
+#include <algorithm>
+#include <tuple>
 
 class Soldat {
 
 private:
     bool alive;
-    Vector2 position;
+    sf::Vector2f position;
     float speed;
-    std::vector<Vector2*> destination;
+    std::vector<sf::Vector2f*> destination;
 
-    std::vector<Vector2*> Pathfinder(Vector2 pos, Vector2 dest, std::vector<Vector2*> map);
+    std::tuple<float, std::vector<sf::Vector2f *>> Pathfinder(std::vector<sf::Vector2f *> chemin, float len, int pos, int dest, Map map, std::vector<int> id_visited);
     
 public:
-    Soldat(Vector2 pos, float speed, Vector2 dest, std::vector<Vector2*> map);
+    Soldat(int pos, float s, int dest, Map map):alive(true),position(map.map[pos]->position),speed(s),destination(std::vector<sf::Vector2f*>()) {
+        destination = std::get<std::vector<sf::Vector2f*>>(Pathfinder(std::vector<sf::Vector2f *>(), 0, pos, dest, map, std::vector<int>()));
+        }
 };
 
 #endif
