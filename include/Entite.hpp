@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
@@ -26,6 +27,7 @@ public:
     void move(const sf::Vector2f &offset);
 
     sf::FloatRect getGlobalBounds() const;
+    const sf::Sprite getSprite() const;
 
     virtual void Update() = 0;
 
@@ -41,5 +43,6 @@ inline void Entite::setPosition(const sf::Vector2f &newPosition) { _sprite->setP
 inline void Entite::move(const sf::Vector2f &offset) { _sprite->move(offset); }
 
 inline sf::FloatRect Entite::getGlobalBounds() const { return _sprite->getGlobalBounds(); }
+const sf::Sprite Entite::getSprite() const { return _sprite; }
 
 #endif

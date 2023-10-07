@@ -26,3 +26,4 @@ bool Entite::chargerTexture(std::string pathTexture)
         std::cerr << "Le fichier" << pathTexture << "n'existe pas." << std::endl;
     }
 }
+
