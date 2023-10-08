@@ -18,16 +18,16 @@ void Entite::chargerTextures()
 {
     for (auto pair : Entite::pathTextures)
     {
-        if (fs::exists(pair.second))
-        {
-            // _textures[static_cast<uint>(pair.first)] = new sf::Texture();
-            if (!_textures[static_cast<uint>(pair.first)].loadFromFile(pair.second))
-                std::cout << "Erreur dans le chargement de la texture " << pair.second << " dans le sprite" << std::endl;
-        }
-        else
-        {
-            std::cout << "Le fichier " << pair.second << " n'existe pas." << std::endl;
-        }
+        //if (fs::exists(pair.second))
+        //{
+        //     _textures[static_cast<uint>(pair.first)] = new sf::Texture();
+        if (!_textures[static_cast<uint>(pair.first)].loadFromFile(pair.second))
+            std::cout << "Erreur dans le chargement de la texture " << pair.second << " dans le sprite" << std::endl;
+        // }
+        // else
+        // {
+        //     std::cout << "Le fichier " << pair.second << " n'existe pas." << std::endl;
+        // }
     }
 }
 
