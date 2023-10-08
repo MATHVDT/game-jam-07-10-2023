@@ -1,9 +1,9 @@
 #include "Controller.hpp"
-//#include <SFML/System.hpp>
-//#include "Soldat.hpp"
+#include <SFML/System.hpp>
 
 int main()
 {
+    
     Controller *controller = Controller::getInstance();
 
     // controller->InitFenetre(1920 / 2, 1080 / 2);
@@ -17,8 +17,6 @@ int main()
 
 
     controller->Run();
-
-    //sf::sleep(sf::seconds(5));
 
     delete controller;
 

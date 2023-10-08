@@ -1,0 +1,16 @@
+#include "Magasin.hpp"
+
+Magasin::Magasin(Entite::Faction faction,
+                 const sf::Vector2f &positionInitiale,
+                 const sf::Vector2f &scale,
+                 uint reserveInitiale)
+    : Batiment(faction, Entite::Type::Magasin,
+               positionInitiale, scale,
+               reserveInitiale, MAX_SIZE_MAGASIN,
+               SPAWN_RATE_MAGASIN, FLOW_RATE_MAGASIN)
+{
+}
+
+Magasin::~Magasin()
+{
+}
