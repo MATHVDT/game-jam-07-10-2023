@@ -40,7 +40,14 @@ void Soldat::Avancer(float time)
             SetNewSpeed();
             position = position + speed * time;
         }
+        else 
+        {
+            speed.x=0;
+            speed.y=0;
+        }
     }
+    else {position = new_pos;}
+    _sprite.setPosition(position.x, position.y);
 }
 
 void Soldat::SetNewSpeed() {
@@ -48,4 +55,9 @@ void Soldat::SetNewSpeed() {
     float temp = std::sqrt(pow(speed.x,2)+pow(speed.y,2));
     speed.x = speed.x / temp * speed_coeff;
     speed.y = speed.y / temp * speed_coeff;
+}
+
+void Soldat::Update() 
+{
+    Avancer(0.017);
 }

@@ -69,6 +69,10 @@ void Controller::dessinerFenetre()
     for (Batiment &bat : _allBatiments)
     {
         dessiner(bat.getSprite());
+    }    
+    for (Soldat &soldat : _allSoldats)
+    {
+        dessiner(soldat.getSprite());
     }
     dessinerOverlayBatiment();
 }
@@ -96,7 +100,24 @@ void Controller::InitController()
 
 void Controller::InitGame()
 {
-    std::string path = "ressources/Bleu_luge.png";
+    std::vector<sf::Vector2f> positions = std::vector<sf::Vector2f>();
+    positions.push_back(sf::Vector2f(0,0));
+    positions.push_back(sf::Vector2f(400,0));
+    positions.push_back(sf::Vector2f(0,400));
+    positions.push_back(sf::Vector2f(400,400));
+   
+    std::vector<sf::Vector2i> links = std::vector<sf::Vector2i>();
+    links.push_back(sf::Vector2i(0,1));
+    links.push_back(sf::Vector2i(0,2));
+    links.push_back(sf::Vector2i(0,3));
+    links.push_back(sf::Vector2i(2,3));
+    links.push_back(sf::Vector2i(1,3));
+    
+    Map map = Map(positions, links);
+    
+    Soldat soldat = Soldat(1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
+    _allSoldats.push_back(soldat);
+    // std::string path = "ressources/Bleu_luge.png";
     // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
     _allBatiments.push_back(std::move(Glacier(Entite::Faction::Bleu,
                                               sf::Vector2f(0.f, 0.f),
@@ -145,6 +166,11 @@ void Controller::Run()
 
         dessinerFenetre();
         afficherFenetre();
+        for (auto it=_allSoldats.begin();it<_allSoldats.end();it++)
+        {
+           it->Update();
+        }
+        sf::sleep(sf::seconds(0.017));
     }
 }
 

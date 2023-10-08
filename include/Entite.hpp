@@ -10,7 +10,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-namespace fs = std::filesystem;
+//namespace fs = std::filesystem;
 
 #define NB_TYPE_ENTITE 7
 

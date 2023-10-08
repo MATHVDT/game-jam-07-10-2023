@@ -9,9 +9,12 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+#include "Soldat.hpp"
 #include "Magasin.hpp"
 #include "Igloo.hpp"
 #include "Glacier.hpp"
+
+#define TIMEFRAME 0.017
 
 class Controller
 {
@@ -31,6 +34,7 @@ private:
     float _hauteurFenetre;
 
     std::vector<Batiment> _allBatiments;
+    std::vector<Soldat> _allSoldats;
     std::list<Batiment *> _playerBatiments;
     std::list<Batiment *> _EnemyBatiments;
 
