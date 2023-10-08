@@ -6,13 +6,13 @@
 // Magasin
 #define RESERVE_INTERNE_ MAGASIN 0
 #define MAX_SIZE_MAGASIN 50
-#define SPAWN_RATE_MAGASIN 1
+#define SPAWN_RATE_MAGASIN 0.016
 #define FLOW_RATE_MAGASIN 5
 
 // Igloo
 #define RESERVE_INTERNE_IGLOO 0
 #define MAX_SIZE_IGLOO 50
-#define SPAWN_RATE_IGLOO 1
+#define SPAWN_RATE_IGLOO 0.016
 #define FLOW_RATE_IGLOO 1
 
 // Glacier
@@ -30,6 +30,8 @@ private:
     float _spawnRate;
     float _flowRate;
 
+    float _spawnDeltaFrame;
+
 public:
     Batiment(Entite::Faction faction, Entite::Type type,
              const sf::Vector2f &positionInitiale,
@@ -38,7 +40,7 @@ public:
              float spawnRate, float flowRate);
     ~Batiment();
 
-    virtual void Update() {}
+    virtual void Update() override;
 
     uint getReserveInterne() const;
 };

@@ -20,7 +20,7 @@
 #define PATH_FONT "ressources/fonts/FROSW___.TTF"
 // #define PATH_FONT "ressources/fonts/Penguin-Regular.ttf"
 // #define PATH_FONT "ressources/fonts/SnowtopCaps.otf"
-constexpr int64_t TIME_FRAME = 0.017; // s
+constexpr int64_t TIME_FRAME = 0.017; // seconde
 
 class Controller
 {

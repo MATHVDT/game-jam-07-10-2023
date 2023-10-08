@@ -69,12 +69,11 @@ void Controller::afficherFenetre()
 
 void Controller::dessinerFenetre()
 {
+    sf::Text text;
     for (Batiment &bat : _allBatiments)
     {
         dessiner(bat.getSprite());
-
-        sf::Text text;
-
+        // Affiche texte Reserve interne du batiment
         text.setFont(font);
         text.setString(std::to_string(bat.getReserveInterne()));
         text.setCharacterSize(26); // exprimée en pixels, pas en points !
@@ -118,6 +117,8 @@ void Controller::dessinerOverlayBatiment()
 
 void Controller::InitController()
 {
+    InitFenetre(1920 , 1080);
+
     Entite::chargerTextures();
 
     if (!font.loadFromFile(PATH_FONT))
@@ -147,15 +148,15 @@ void Controller::InitGame()
     _allSoldats.push_back(soldat);
     // std::string path = "ressources/Bleu_luge.png";
     // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
-    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Bleu,
+    _allBatiments.push_back(std::move(Igloo(Entite::Faction::Bleu,
                                               sf::Vector2f(0.f, 0.f),
                                               sf::Vector2f(0.01f, 0.01f),
                                               10)));
-    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Neutre,
+    _allBatiments.push_back(std::move(Igloo(Entite::Faction::Neutre,
                                               sf::Vector2f(100.f, 0.f),
                                               sf::Vector2f(0.01f, 0.01f),
                                               10)));
-    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Rouge,
+    _allBatiments.push_back(std::move(Igloo(Entite::Faction::Rouge,
                                               sf::Vector2f(200.f, 0.f),
                                               sf::Vector2f(0.01f, 0.01f),
                                               10)));
@@ -163,7 +164,6 @@ void Controller::InitGame()
 
 void Controller::Run()
 {
-    InitFenetre(1920 / 2, 1080 / 2);
     InitController();
     InitGame();
 
@@ -202,7 +202,7 @@ void Controller::Run()
         dessinerFenetre();
         afficherFenetre();
 
-        sf::sleep(sf::seconds(0.017));
+        // sf::sleep(sf::seconds(0.017));
     }
 }
 
