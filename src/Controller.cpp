@@ -6,7 +6,8 @@ Controller *Controller::_instance = nullptr;
 /*                 Instanciation                    */
 /****************************************************/
 Controller::Controller()
-    : _fenetre{}, _largeurFenetre()
+    : _fenetre{}, _largeurFenetre(), _hauteurFenetre(),
+      _clock(), _timeFrame(sf::seconds(TIME_FRAME))
 {
     _batimentHover = nullptr;
     _batimentSelect = nullptr;
@@ -19,7 +20,7 @@ Controller::~Controller()
 
 Controller *Controller::getInstance()
 {
-    
+
     if (Controller::_instance == nullptr)
     {
         Controller::_instance = new Controller();
@@ -71,7 +72,17 @@ void Controller::dessinerFenetre()
     for (Batiment &bat : _allBatiments)
     {
         dessiner(bat.getSprite());
-    }    
+
+        sf::Text text;
+
+        text.setFont(font);
+        text.setString(std::to_string(bat.getReserveInterne()));
+        text.setCharacterSize(26); // exprimée en pixels, pas en points !
+        text.setFillColor(bat.getColorFaction());
+        text.setPosition(bat.getPosition());
+
+        dessiner(text);
+    }
     for (Soldat &soldat : _allSoldats)
     {
         dessiner(soldat.getSprite());
@@ -108,26 +119,31 @@ void Controller::dessinerOverlayBatiment()
 void Controller::InitController()
 {
     Entite::chargerTextures();
+
+    if (!font.loadFromFile(PATH_FONT))
+    {
+        std::cerr << "Erreur dans chargement de la font : " << PATH_FONT << std::endl;
+    }
 }
 
 void Controller::InitGame()
 {
     std::vector<sf::Vector2f> positions = std::vector<sf::Vector2f>();
-    positions.push_back(sf::Vector2f(0,0));
-    positions.push_back(sf::Vector2f(400,0));
-    positions.push_back(sf::Vector2f(0,400));
-    positions.push_back(sf::Vector2f(400,400));
-   
+    positions.push_back(sf::Vector2f(0, 0));
+    positions.push_back(sf::Vector2f(400, 0));
+    positions.push_back(sf::Vector2f(0, 400));
+    positions.push_back(sf::Vector2f(400, 400));
+
     std::vector<sf::Vector2i> links = std::vector<sf::Vector2i>();
-    links.push_back(sf::Vector2i(0,1));
-    links.push_back(sf::Vector2i(0,2));
-    links.push_back(sf::Vector2i(0,3));
-    links.push_back(sf::Vector2i(2,3));
-    links.push_back(sf::Vector2i(1,3));
-    
+    links.push_back(sf::Vector2i(0, 1));
+    links.push_back(sf::Vector2i(0, 2));
+    links.push_back(sf::Vector2i(0, 3));
+    links.push_back(sf::Vector2i(2, 3));
+    links.push_back(sf::Vector2i(1, 3));
+
     Map map = Map(positions, links);
-    
-    Soldat soldat = Soldat(1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
+
+    Soldat soldat = Soldat(1, 100, 2, map, Entite::Faction::Bleu, Entite::Type::PingouinBleu, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.008f, 0.008f));
     _allSoldats.push_back(soldat);
     // std::string path = "ressources/Bleu_luge.png";
     // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
@@ -177,12 +193,15 @@ void Controller::Run()
             }
         }
 
+        if (_clock.getElapsedTime() > _timeFrame)
+        {
+            UpdateEntites();
+            _clock.restart();
+        }
+
         dessinerFenetre();
         afficherFenetre();
-        for (auto it=_allSoldats.begin();it<_allSoldats.end();it++)
-        {
-           it->Update();
-        }
+
         sf::sleep(sf::seconds(0.017));
     }
 }
@@ -250,4 +269,28 @@ void Controller::sourisMoved()
 /****************************************************/
 void Controller::LanceAttaque(Batiment *source, Batiment *destination)
 {
+}
+
+void Controller::UpdateEntites()
+{
+    // GestionCollisionEntites();
+
+    UpdateBatiments();
+    UpdateSoldats();
+}
+
+void Controller::UpdateSoldats()
+{
+    for (auto it = _allSoldats.begin(); it < _allSoldats.end(); it++)
+    {
+        it->Update();
+    }
+}
+
+void Controller::UpdateBatiments()
+{
+    for (auto &bat : _allBatiments)
+    {
+        bat.Update();
+    }
 }

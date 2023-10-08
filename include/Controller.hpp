@@ -6,15 +6,21 @@
 #include <list>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Time.hpp>
 
 #include "Soldat.hpp"
 #include "Magasin.hpp"
 #include "Igloo.hpp"
 #include "Glacier.hpp"
 
-#define TIMEFRAME 0.017
+// #define PATH_FONT "ressources/fonts/almonte snow.otf"
+#define PATH_FONT "ressources/fonts/FROSW___.TTF"
+// #define PATH_FONT "ressources/fonts/Penguin-Regular.ttf"
+// #define PATH_FONT "ressources/fonts/SnowtopCaps.otf"
+constexpr int64_t TIME_FRAME = 0.017; // s
 
 class Controller
 {
@@ -32,6 +38,11 @@ private:
     sf::RenderWindow _fenetre;
     float _largeurFenetre;
     float _hauteurFenetre;
+
+    sf::Clock _clock;
+    sf::Time _timeFrame;
+
+    sf::Font font;
 
     std::vector<Batiment> _allBatiments;
     std::vector<Soldat> _allSoldats;
@@ -65,6 +76,11 @@ public:
 
     // Gestion...
     void LanceAttaque(Batiment *source, Batiment *destination);
+    void UpdateEntites();
+    void UpdateBatiments();
+    void UpdateSoldats();
+
+    // void GestionCollisionEntites();
 
 private:
     Controller();

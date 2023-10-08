@@ -39,6 +39,13 @@ public:
     ~Batiment();
 
     virtual void Update() {}
+
+    uint getReserveInterne() const;
 };
+
+/****************************************************/
+/*                  Méthodes inline                 */
+/****************************************************/
+inline uint Batiment::getReserveInterne() const { return _reserveInterne; }
 
 #endif
