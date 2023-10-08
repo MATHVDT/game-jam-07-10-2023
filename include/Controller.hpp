@@ -39,6 +39,7 @@ private:
     std::list<Batiment *> _EnemyBatiments;
 
     Batiment *_batimentSelect;
+    Batiment *_batimentHover;
 
 public:
     ~Controller();
@@ -60,6 +61,7 @@ public:
     Batiment *getBatimentSousSouris();
     void boutonSourisPresse();
     void boutonSourisRelache();
+    void sourisMoved();
 
     // Gestion...
     void LanceAttaque(Batiment *source, Batiment *destination);

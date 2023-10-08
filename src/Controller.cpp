@@ -8,6 +8,8 @@ Controller *Controller::_instance = nullptr;
 Controller::Controller()
     : _fenetre{}, _largeurFenetre()
 {
+    _batimentHover = nullptr;
+    _batimentSelect = nullptr;
 }
 
 Controller::~Controller()
@@ -79,15 +81,25 @@ void Controller::dessinerFenetre()
 
 void Controller::dessinerOverlayBatiment()
 {
-    Batiment *bat = _batimentSelect;
+    Batiment *bat = _batimentHover;
     if (bat != nullptr)
     {
-        sf::RectangleShape border(sf::Vector2f(bat->getSprite().getGlobalBounds().width - 10, bat->getSprite().getGlobalBounds().height - 10));
-        border.setFillColor(sf::Color::Transparent);
-        border.setOutlineThickness(5);
-        border.setOutlineColor(sf::Color::Yellow);
-        border.setPosition(bat->getSprite().getPosition().x + 5, bat->getSprite().getPosition().y + 5);
-        dessiner(border);
+        sf::RectangleShape borderHover(sf::Vector2f(bat->getSprite().getGlobalBounds().width - 10, bat->getSprite().getGlobalBounds().height - 10));
+        borderHover.setFillColor(sf::Color::Transparent);
+        borderHover.setOutlineThickness(8);
+        borderHover.setOutlineColor(sf::Color::Yellow);
+        borderHover.setPosition(bat->getSprite().getPosition().x + 5, bat->getSprite().getPosition().y + 5);
+        dessiner(borderHover);
+    }
+    bat = _batimentSelect;
+    if (bat != nullptr)
+    {
+        sf::RectangleShape borderSelect(sf::Vector2f(bat->getSprite().getGlobalBounds().width - 10, bat->getSprite().getGlobalBounds().height - 10));
+        borderSelect.setFillColor(sf::Color::Transparent);
+        borderSelect.setOutlineThickness(5);
+        borderSelect.setOutlineColor(sf::Color::Black);
+        borderSelect.setPosition(bat->getSprite().getPosition().x + 5, bat->getSprite().getPosition().y + 5);
+        dessiner(borderSelect);
     }
 }
 /****************************************************/
@@ -151,6 +163,7 @@ void Controller::Run()
                 break;
 
             case sf::Event::MouseMoved:
+                sourisMoved();
                 break;
             case sf::Event::MouseButtonPressed:
                 boutonSourisPresse();
@@ -180,15 +193,15 @@ void Controller::Run()
 Batiment *Controller::getBatimentSousSouris()
 {
     sf::Vector2i mousePositionFenetre = sf::Mouse::getPosition(_fenetre);
-    // std::cout << "Souris (" << mousePosition.x << ", " << mousePosition.y << ")" << std::endl;
     sf::Vector2f mousePositionMonde = _fenetre.mapPixelToCoords(mousePositionFenetre); // convertit en coordonnées mondiales
+    // std::cout << "Souris (" << mousePositionMonde.x << ", " << mousePositionMonde.y << ")" << std::endl;
 
     for (Batiment &bat : _allBatiments)
     {
         // Vérifie si la souris est sur la zone du batiment
         if (bat.getGlobalBounds().contains(mousePositionMonde.x, mousePositionMonde.y))
         {
-            std::cout << "Souris sur batiment" << std::endl;
+            // std::cout << "Souris sur batiment" << std::endl;
             return &bat;
         }
     }
@@ -224,6 +237,12 @@ void Controller::boutonSourisRelache()
         if (batimentSousSouris == nullptr)
             return;
     }
+}
+
+void Controller::sourisMoved()
+{
+    Batiment *batimentSousSouris = getBatimentSousSouris();
+    _batimentHover = batimentSousSouris;
 }
 
 /****************************************************/
