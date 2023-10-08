@@ -35,7 +35,7 @@ void Entite::chargerTextures()
 /*                 Constructeur                     */
 /****************************************************/
 Entite::Entite(Entite::Faction faction, Entite::Type type,
-               const sf::Vector2f &initialPosition,
+               const sf::Vector2f &positionInitiale,
                const sf::Vector2f &scale)
     : _entiteId(++compteurEntiteId),
       _faction(faction),
@@ -43,7 +43,7 @@ Entite::Entite(Entite::Faction faction, Entite::Type type,
       _sprite(), _scale(scale)
 {
     _sprite.setTexture(_textures[static_cast<uint>(type)]);
-    _sprite.setPosition(initialPosition);
+    _sprite.setPosition(positionInitiale);
     _sprite.setScale(_scale);
     switch (_faction)
     {

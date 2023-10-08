@@ -17,7 +17,7 @@ namespace fs = std::filesystem;
 class Entite
 {
 public:
-    enum class Type : uint
+    enum class Type 
     {
         PingouinBleu,
         LugeurBleu,
@@ -53,7 +53,7 @@ protected:
 
 public:
     Entite(Entite::Faction faction, Entite::Type type,
-           const sf::Vector2f &initialPosition,
+           const sf::Vector2f &positionInitiale,
            const sf::Vector2f &scale);
     ~Entite();
 

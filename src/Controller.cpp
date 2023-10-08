@@ -97,18 +97,18 @@ void Controller::InitGame()
 {
     std::string path = "ressources/Bleu_luge.png";
     // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
-    _allBatiments.push_back(std::move(Batiment(Entite::Faction::Bleu,
-                                               Entite::Type::Glacier,
-                                               sf::Vector2f(0.f, 0.f),
-                                               sf::Vector2f(0.01f, 0.01f))));
-    _allBatiments.push_back(std::move(Batiment(Entite::Faction::Neutre,
-                                               Entite::Type::Igloo,
-                                               sf::Vector2f(100.f, 0.f),
-                                               sf::Vector2f(0.01f, 0.01f))));
-    _allBatiments.push_back(std::move(Batiment(Entite::Faction::Rouge,
-                                               Entite::Type::Igloo,
-                                               sf::Vector2f(200.f, 0.f),
-                                               sf::Vector2f(0.01f, 0.01f))));
+    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Bleu,
+                                              sf::Vector2f(0.f, 0.f),
+                                              sf::Vector2f(0.01f, 0.01f),
+                                              10)));
+    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Neutre,
+                                              sf::Vector2f(100.f, 0.f),
+                                              sf::Vector2f(0.01f, 0.01f),
+                                              10)));
+    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Rouge,
+                                              sf::Vector2f(200.f, 0.f),
+                                              sf::Vector2f(0.01f, 0.01f),
+                                              10)));
 }
 
 void Controller::Run()

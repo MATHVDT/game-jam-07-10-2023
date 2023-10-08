@@ -9,7 +9,9 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-#include "Batiment.hpp"
+#include "Magasin.hpp"
+#include "Igloo.hpp"
+#include "Glacier.hpp"
 
 class Controller
 {
