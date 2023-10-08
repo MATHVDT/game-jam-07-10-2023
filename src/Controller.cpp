@@ -131,22 +131,28 @@ void Controller::InitController()
 void Controller::InitGame()
 {
     std::vector<sf::Vector2f> positions = std::vector<sf::Vector2f>();
-    positions.push_back(sf::Vector2f(0, 0));
-    positions.push_back(sf::Vector2f(400, 0));
-    positions.push_back(sf::Vector2f(0, 400));
-    positions.push_back(sf::Vector2f(400, 400));
 
+    positions.push_back(sf::Vector2f(100,100));
+    positions.push_back(sf::Vector2f(400,100));
+    positions.push_back(sf::Vector2f(100,400));
+    positions.push_back(sf::Vector2f(400,400));
+   
     std::vector<sf::Vector2i> links = std::vector<sf::Vector2i>();
-    links.push_back(sf::Vector2i(0, 1));
-    links.push_back(sf::Vector2i(0, 2));
-    links.push_back(sf::Vector2i(0, 3));
-    links.push_back(sf::Vector2i(2, 3));
-    links.push_back(sf::Vector2i(1, 3));
-
+    //links.push_back(sf::Vector2i(0,1));
+    links.push_back(sf::Vector2i(0,2));
+    links.push_back(sf::Vector2i(0,3));
+    //links.push_back(sf::Vector2i(2,3));
+    links.push_back(sf::Vector2i(1,3));
+    
     Map map = Map(positions, links);
+    
+    Soldat soldat = Soldat(0, 1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
+    Soldat soldat1 = Soldat(-20, 1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
+    Soldat soldat2 = Soldat(20, 1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
 
-    Soldat soldat = Soldat(1, 100, 2, map, Entite::Faction::Bleu, Entite::Type::PingouinBleu, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.008f, 0.008f));
     _allSoldats.push_back(soldat);
+    _allSoldats.push_back(soldat1);
+    _allSoldats.push_back(soldat2);
     // std::string path = "ressources/Bleu_luge.png";
     // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
     _allBatiments.push_back(std::move(Igloo(Entite::Faction::Bleu,
