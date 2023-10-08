@@ -10,14 +10,14 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-//namespace fs = std::filesystem;
+namespace fs = std::filesystem;
 
 #define NB_TYPE_ENTITE 7
 
 class Entite
 {
 public:
-    enum class Type 
+    enum class Type
     {
         PingouinBleu,
         LugeurBleu,
@@ -62,11 +62,13 @@ public:
     void setPosition(const sf::Vector2f &newPosition);
     void move(const sf::Vector2f &offset);
 
+    const sf::Color getColorFaction();
     sf::FloatRect getGlobalBounds() const;
     const sf::Sprite &getSprite() const;
     const sf::Vector2f &getScale() const;
     const Entite::Type getType() const;
     const Entite::Faction getFaction() const;
+    const uint getId() const;
 
     virtual void Update() = 0;
 };
@@ -83,5 +85,6 @@ inline const sf::Sprite &Entite::getSprite() const { return _sprite; }
 inline const sf::Vector2f &Entite::getScale() const { return _scale; }
 inline const Entite::Type Entite ::getType() const { return _type; }
 inline const Entite::Faction Entite ::getFaction() const { return _faction; }
+inline const uint Entite::getId() const { return _entiteId; }
 
 #endif

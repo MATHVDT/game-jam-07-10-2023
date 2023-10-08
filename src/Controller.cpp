@@ -6,8 +6,12 @@ Controller *Controller::_instance = nullptr;
 /*                 Instanciation                    */
 /****************************************************/
 Controller::Controller()
-    : _fenetre{}, _largeurFenetre()
+    : _fenetre{}, _largeurFenetre(), _hauteurFenetre(),
+      _clock(), _timeFrame(sf::seconds(TIME_FRAME)),
+      _font(), _map()
 {
+    _batimentHover = nullptr;
+    _batimentSelect = nullptr;
 }
 
 Controller::~Controller()
@@ -17,7 +21,7 @@ Controller::~Controller()
 
 Controller *Controller::getInstance()
 {
-    
+
     if (Controller::_instance == nullptr)
     {
         Controller::_instance = new Controller();
@@ -66,10 +70,19 @@ void Controller::afficherFenetre()
 
 void Controller::dessinerFenetre()
 {
+    sf::Text text;
     for (Batiment &bat : _allBatiments)
     {
         dessiner(bat.getSprite());
-    }    
+        // Affiche texte Reserve interne du batiment
+        text.setFont(_font);
+        text.setString(std::to_string(bat.getReserveInterne()));
+        text.setCharacterSize(26); // exprimée en pixels, pas en points !
+        text.setFillColor(bat.getColorFaction());
+        text.setPosition(bat.getPosition());
+
+        dessiner(text);
+    }
     for (Soldat &soldat : _allSoldats)
     {
         dessiner(soldat.getSprite());
@@ -79,15 +92,25 @@ void Controller::dessinerFenetre()
 
 void Controller::dessinerOverlayBatiment()
 {
-    Batiment *bat = _batimentSelect;
+    Batiment *bat = _batimentHover;
     if (bat != nullptr)
     {
-        sf::RectangleShape border(sf::Vector2f(bat->getSprite().getGlobalBounds().width - 10, bat->getSprite().getGlobalBounds().height - 10));
-        border.setFillColor(sf::Color::Transparent);
-        border.setOutlineThickness(5);
-        border.setOutlineColor(sf::Color::Yellow);
-        border.setPosition(bat->getSprite().getPosition().x + 5, bat->getSprite().getPosition().y + 5);
-        dessiner(border);
+        sf::RectangleShape borderHover(sf::Vector2f(bat->getSprite().getGlobalBounds().width - 10, bat->getSprite().getGlobalBounds().height - 10));
+        borderHover.setFillColor(sf::Color::Transparent);
+        borderHover.setOutlineThickness(8);
+        borderHover.setOutlineColor(sf::Color::Yellow);
+        borderHover.setPosition(bat->getSprite().getPosition().x + 5, bat->getSprite().getPosition().y + 5);
+        dessiner(borderHover);
+    }
+    bat = _batimentSelect;
+    if (bat != nullptr)
+    {
+        sf::RectangleShape borderSelect(sf::Vector2f(bat->getSprite().getGlobalBounds().width - 10, bat->getSprite().getGlobalBounds().height - 10));
+        borderSelect.setFillColor(sf::Color::Transparent);
+        borderSelect.setOutlineThickness(5);
+        borderSelect.setOutlineColor(sf::Color::Black);
+        borderSelect.setPosition(bat->getSprite().getPosition().x + 5, bat->getSprite().getPosition().y + 5);
+        dessiner(borderSelect);
     }
 }
 /****************************************************/
@@ -95,12 +118,20 @@ void Controller::dessinerOverlayBatiment()
 
 void Controller::InitController()
 {
+    InitFenetre(1920, 1080);
+
     Entite::chargerTextures();
+
+    if (!_font.loadFromFile(PATH_FONT))
+    {
+        std::cerr << "Erreur dans chargement de la font : " << PATH_FONT << std::endl;
+    }
 }
 
 void Controller::InitGame()
 {
     std::vector<sf::Vector2f> positions = std::vector<sf::Vector2f>();
+
     positions.push_back(sf::Vector2f(100,100));
     positions.push_back(sf::Vector2f(400,100));
     positions.push_back(sf::Vector2f(100,400));
@@ -118,28 +149,28 @@ void Controller::InitGame()
     Soldat soldat = Soldat(0, 1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
     Soldat soldat1 = Soldat(-20, 1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
     Soldat soldat2 = Soldat(20, 1, 100, 2, map, Entite::Type::PingouinBleu, sf::Vector2f(0.008f, 0.008f));
+
     _allSoldats.push_back(soldat);
     _allSoldats.push_back(soldat1);
     _allSoldats.push_back(soldat2);
     // std::string path = "ressources/Bleu_luge.png";
     // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
-    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Bleu,
-                                              sf::Vector2f(0.f, 0.f),
-                                              sf::Vector2f(0.01f, 0.01f),
-                                              10)));
-    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Neutre,
-                                              sf::Vector2f(100.f, 0.f),
-                                              sf::Vector2f(0.01f, 0.01f),
-                                              10)));
-    _allBatiments.push_back(std::move(Glacier(Entite::Faction::Rouge,
-                                              sf::Vector2f(200.f, 0.f),
-                                              sf::Vector2f(0.01f, 0.01f),
-                                              10)));
+    _allBatiments.push_back(std::move(Igloo(Entite::Faction::Bleu,
+                                            sf::Vector2f(0.f, 0.f),
+                                            sf::Vector2f(0.01f, 0.01f),
+                                            10)));
+    _allBatiments.push_back(std::move(Igloo(Entite::Faction::Neutre,
+                                            sf::Vector2f(100.f, 0.f),
+                                            sf::Vector2f(0.01f, 0.01f),
+                                            10)));
+    _allBatiments.push_back(std::move(Igloo(Entite::Faction::Rouge,
+                                            sf::Vector2f(200.f, 0.f),
+                                            sf::Vector2f(0.01f, 0.01f),
+                                            10)));
 }
 
 void Controller::Run()
 {
-    InitFenetre(1920 / 2, 1080 / 2);
     InitController();
     InitGame();
 
@@ -155,6 +186,7 @@ void Controller::Run()
                 break;
 
             case sf::Event::MouseMoved:
+                sourisMoved();
                 break;
             case sf::Event::MouseButtonPressed:
                 boutonSourisPresse();
@@ -168,13 +200,16 @@ void Controller::Run()
             }
         }
 
+        if (_clock.getElapsedTime() > _timeFrame)
+        {
+            UpdateEntites();
+            _clock.restart();
+        }
+
         dessinerFenetre();
         afficherFenetre();
-        for (auto it=_allSoldats.begin();it<_allSoldats.end();it++)
-        {
-           it->Update();
-        }
-        sf::sleep(sf::seconds(0.017));
+
+        // sf::sleep(sf::seconds(0.017));
     }
 }
 
@@ -184,15 +219,15 @@ void Controller::Run()
 Batiment *Controller::getBatimentSousSouris()
 {
     sf::Vector2i mousePositionFenetre = sf::Mouse::getPosition(_fenetre);
-    // std::cout << "Souris (" << mousePosition.x << ", " << mousePosition.y << ")" << std::endl;
     sf::Vector2f mousePositionMonde = _fenetre.mapPixelToCoords(mousePositionFenetre); // convertit en coordonnées mondiales
+    // std::cout << "Souris (" << mousePositionMonde.x << ", " << mousePositionMonde.y << ")" << std::endl;
 
     for (Batiment &bat : _allBatiments)
     {
         // Vérifie si la souris est sur la zone du batiment
         if (bat.getGlobalBounds().contains(mousePositionMonde.x, mousePositionMonde.y))
         {
-            std::cout << "Souris sur batiment" << std::endl;
+            // std::cout << "Souris sur batiment" << std::endl;
             return &bat;
         }
     }
@@ -227,7 +262,19 @@ void Controller::boutonSourisRelache()
         Batiment *batimentSousSouris = getBatimentSousSouris();
         if (batimentSousSouris == nullptr)
             return;
+
+        uint idSrc = _batimentSelect->getId();
+        uint idDest = batimentSousSouris->getId();
+        uint nbSoldatsDispo = _batimentSelect->getReserveInterne();
+        _batimentSelect->setNbSoldatsALiberer(nbSoldatsDispo / 3,
+                                              idSrc, idDest, _map);
     }
+}
+
+void Controller::sourisMoved()
+{
+    Batiment *batimentSousSouris = getBatimentSousSouris();
+    _batimentHover = batimentSousSouris;
 }
 
 /****************************************************/
@@ -235,4 +282,46 @@ void Controller::boutonSourisRelache()
 /****************************************************/
 void Controller::LanceAttaque(Batiment *source, Batiment *destination)
 {
+}
+
+void Controller::UpdateEntites()
+{
+    // GestionCollisionEntites();
+
+    UpdateBatiments();
+    UpdateSoldats();
+}
+
+void Controller::UpdateSoldats()
+{
+    for (auto it = _allSoldats.begin(); it < _allSoldats.end(); it++)
+    {
+        it->Update();
+    }
+}
+
+void Controller::UpdateBatiments()
+{
+    for (Batiment &bat : _allBatiments)
+    {
+        bat.Update();
+        if (bat.doitLibererSoldats())
+        {
+            bat.libereLigneSoldat();
+            //     switch (bat.getType())
+            //     {
+            //     case Entite::Type::Magasin:
+            //         dynamic_cast<Magasin &>(bat).libereLigneSoldat();
+            //         break;
+            //     case Entite::Type::Igloo:
+            //         dynamic_cast<Magasin &>(bat).libereLigneSoldat();
+            //         break;
+            //     case Entite::Type::Glacier:
+            //         dynamic_cast<Magasin &>(bat).libereLigneSoldat();
+            //         break;
+            //     default:
+            //         break;
+            //     }
+        }
+    }
 }

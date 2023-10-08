@@ -5,10 +5,10 @@
 #include <algorithm>
 #include <tuple>
 #include "Entite.hpp"
-//#include "Controller.hpp"
+// #include "Controller.hpp"
 
-class Soldat : public Entite {
-
+class Soldat : public Entite
+{
 private:
     bool alive;
     int offset;
@@ -22,12 +22,12 @@ private:
     sf::Vector2f RotatePoint(sf::Vector2f center, float angle, sf::Vector2f point, float det);
     
 public:
-    Soldat(int offs, int pos, float s, int dest, Map map, Entite::Type type, const sf::Vector2f &scale):offset(offs),alive(true),position(map.map[pos]->position),speed(std::vector<sf::Vector2f>()),speed_coeff(s),destination(std::vector<sf::Vector2f>()),Entite(type, scale) {
-        destination = std::get<std::vector<sf::Vector2f>>(Pathfinder(std::vector<sf::Vector2f>(), 0, pos, dest, map, std::vector<int>()));
-        destination.erase(destination.begin());
-        SetSpeed();
-        SetOffset();
-        }
+    Soldat(int offs, int pos, float s, int dest, Map map,
+           Entite::Faction faction, Entite::Type type,
+           const sf::Vector2f &positionInitiale,
+           const sf::Vector2f &scale);
+    ~Soldat();
+
     void Avancer(float time);
     void SetSpeed();
     void Update();

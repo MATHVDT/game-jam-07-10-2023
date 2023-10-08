@@ -1,8 +1,27 @@
 #include "../include/Soldat.hpp"
 
+/****************************************************/
+/*                 Constructeur                     */
+/****************************************************/
+Soldat::Soldat(int pos, float s, int dest, Map map,
+               Entite::Faction faction, Entite::Type type,
+               const sf::Vector2f &positionInitiale,
+               const sf::Vector2f &scale)
+    : Entite(faction, type, positionInitiale, scale),offset(offs), alive(true),
+      position(map.map[pos]->position), speed(std::vector<sf::Vector2f>()), speed_coeff(s),
+      destination(std::vector<sf::Vector2f>())
+{
+    destination = std::get<std::vector<sf::Vector2f>>(Pathfinder(std::vector<sf::Vector2f>(), 0, pos, dest, map, std::vector<int>()));
+    destination.erase(destination.begin());
+    SetSpeed();
+    SetOffset();
+}
+
+Soldat::~Soldat() {}
+
 std::tuple<float, std::vector<sf::Vector2f>> Soldat::Pathfinder(std::vector<sf::Vector2f> chemin, float len, int pos, int dest, Map map, std::vector<int> id_visited)
 {
-    if (pos==dest)
+    if (pos == dest)
     {
         chemin.push_back(map.map[pos]->position);
         return std::tuple<float, std::vector<sf::Vector2f>>(len, chemin);
@@ -10,7 +29,7 @@ std::tuple<float, std::vector<sf::Vector2f>> Soldat::Pathfinder(std::vector<sf::
     std::tuple<float, std::vector<sf::Vector2f>> res = std::tuple<float, std::vector<sf::Vector2f>>(__FLT_MAX__, chemin);
     chemin.push_back(map.map[pos]->position);
     id_visited.push_back(pos);
-    for (auto it=map.map[pos]->voisin.begin();it<map.map[pos]->voisin.end();it++)
+    for (auto it = map.map[pos]->voisin.begin(); it < map.map[pos]->voisin.end(); it++)
     {
         if (std::find(id_visited.begin(), id_visited.end(), *it) == id_visited.end())
         {
@@ -49,7 +68,10 @@ void Soldat::Avancer(float time)
         speed.erase(speed.begin());
         position = position + speed[0] * time;
     }
-    else {position = new_pos;}
+    else
+    {
+        position = new_pos;
+    }
     _sprite.setPosition(position.x, position.y);
 }
 
@@ -69,7 +91,7 @@ void Soldat::SetSpeed() {
     speed.push_back(sf::Vector2f(0,0));
 }
 
-void Soldat::Update() 
+void Soldat::Update()
 {
     Avancer(0.017);
 }

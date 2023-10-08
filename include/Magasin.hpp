@@ -13,6 +13,8 @@ public:
             const sf::Vector2f &scale,
             uint reserveInitiale);
     ~Magasin();
+
+    virtual std::list<Soldat *> *libereLigneSoldat() override;
 };
 
 #endif

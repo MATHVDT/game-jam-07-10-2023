@@ -7,10 +7,16 @@ Igloo::Igloo(Entite::Faction faction,
     : Batiment(faction, Entite::Type::Igloo,
                positionInitiale, scale,
                reserveInitiale, MAX_SIZE_IGLOO,
-               SPAWN_RATE_IGLOO, FLOW_RATE_IGLOO)
-{
-}
+               SPAWN_RATE_IGLOO, FLOW_RATE_IGLOO) {}
 
-Igloo::~Igloo()
+Igloo::~Igloo() {}
+
+std::list<Soldat *> *Igloo::libereLigneSoldat()
 {
+    if (_faction == Entite::Faction::Bleu)
+        return Batiment::libereLigneSoldat(Entite::Type::PingouinBleu);
+    else if (_faction == Entite::Faction::Rouge)
+        return Batiment::libereLigneSoldat(Entite::Type::PingouinRouge);
+    else
+        return nullptr;
 }

@@ -14,3 +14,13 @@ Magasin::Magasin(Entite::Faction faction,
 Magasin::~Magasin()
 {
 }
+
+std::list<Soldat *> *Magasin::libereLigneSoldat()
+{
+    if (_faction == Entite::Faction::Bleu)
+        return Batiment::libereLigneSoldat(Entite::Type::LugeurBleu);
+    else if (_faction == Entite::Faction::Rouge)
+        return Batiment::libereLigneSoldat(Entite::Type::LugeurRouge);
+    else
+        return nullptr;
+}
