@@ -15,6 +15,7 @@
 #include "Magasin.hpp"
 #include "Igloo.hpp"
 #include "Glacier.hpp"
+#include "Map.hpp"
 
 // #define PATH_FONT "ressources/fonts/almonte snow.otf"
 #define PATH_FONT "ressources/fonts/FROSW___.TTF"
@@ -42,7 +43,8 @@ private:
     sf::Clock _clock;
     sf::Time _timeFrame;
 
-    sf::Font font;
+    sf::Font _font;
+    Map _map;
 
     std::vector<Batiment> _allBatiments;
     std::vector<Soldat> _allSoldats;

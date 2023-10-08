@@ -14,7 +14,7 @@ public:
             uint reserveInitiale);
     ~Magasin();
 
-    std::list<Soldat *> *libereLigneSoldat(uint nbSoldats);
+    virtual std::list<Soldat *> *libereLigneSoldat() override;
 };
 
 #endif

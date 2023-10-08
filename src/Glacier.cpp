@@ -15,12 +15,12 @@ Glacier::~Glacier()
 {
 }
 
-std::list<Soldat *> *Glacier::libereLigneSoldat(uint nbSoldats)
+std::list<Soldat *> *Glacier::libereLigneSoldat()
 {
     if (_faction == Entite::Faction::Bleu)
-        return Batiment::libereSoldat(nbSoldats, Entite::Type::PingouinBleu);
+        return Batiment::libereLigneSoldat(Entite::Type::PingouinBleu);
     else if (_faction == Entite::Faction::Rouge)
-        return Batiment::libereSoldat(nbSoldats, Entite::Type::PingouinRouge);
+        return Batiment::libereLigneSoldat(Entite::Type::PingouinRouge);
     else
         return nullptr;
 }

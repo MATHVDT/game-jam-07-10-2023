@@ -15,12 +15,12 @@ Magasin::~Magasin()
 {
 }
 
-std::list<Soldat *> *Magasin::libereLigneSoldat(uint nbSoldats)
+std::list<Soldat *> *Magasin::libereLigneSoldat()
 {
     if (_faction == Entite::Faction::Bleu)
-        return Batiment::libereSoldat(nbSoldats, Entite::Type::LugeurBleu);
+        return Batiment::libereLigneSoldat(Entite::Type::LugeurBleu);
     else if (_faction == Entite::Faction::Rouge)
-        return Batiment::libereSoldat(nbSoldats, Entite::Type::LugeurRouge);
+        return Batiment::libereLigneSoldat(Entite::Type::LugeurRouge);
     else
         return nullptr;
 }

@@ -7,7 +7,8 @@ Controller *Controller::_instance = nullptr;
 /****************************************************/
 Controller::Controller()
     : _fenetre{}, _largeurFenetre(), _hauteurFenetre(),
-      _clock(), _timeFrame(sf::seconds(TIME_FRAME))
+      _clock(), _timeFrame(sf::seconds(TIME_FRAME)),
+      _font(), _map()
 {
     _batimentHover = nullptr;
     _batimentSelect = nullptr;
@@ -74,7 +75,7 @@ void Controller::dessinerFenetre()
     {
         dessiner(bat.getSprite());
         // Affiche texte Reserve interne du batiment
-        text.setFont(font);
+        text.setFont(_font);
         text.setString(std::to_string(bat.getReserveInterne()));
         text.setCharacterSize(26); // exprimée en pixels, pas en points !
         text.setFillColor(bat.getColorFaction());
@@ -117,11 +118,11 @@ void Controller::dessinerOverlayBatiment()
 
 void Controller::InitController()
 {
-    InitFenetre(1920 , 1080);
+    InitFenetre(1920, 1080);
 
     Entite::chargerTextures();
 
-    if (!font.loadFromFile(PATH_FONT))
+    if (!_font.loadFromFile(PATH_FONT))
     {
         std::cerr << "Erreur dans chargement de la font : " << PATH_FONT << std::endl;
     }
@@ -149,17 +150,17 @@ void Controller::InitGame()
     // std::string path = "ressources/Bleu_luge.png";
     // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
     _allBatiments.push_back(std::move(Igloo(Entite::Faction::Bleu,
-                                              sf::Vector2f(0.f, 0.f),
-                                              sf::Vector2f(0.01f, 0.01f),
-                                              10)));
+                                            sf::Vector2f(0.f, 0.f),
+                                            sf::Vector2f(0.01f, 0.01f),
+                                            10)));
     _allBatiments.push_back(std::move(Igloo(Entite::Faction::Neutre,
-                                              sf::Vector2f(100.f, 0.f),
-                                              sf::Vector2f(0.01f, 0.01f),
-                                              10)));
+                                            sf::Vector2f(100.f, 0.f),
+                                            sf::Vector2f(0.01f, 0.01f),
+                                            10)));
     _allBatiments.push_back(std::move(Igloo(Entite::Faction::Rouge,
-                                              sf::Vector2f(200.f, 0.f),
-                                              sf::Vector2f(0.01f, 0.01f),
-                                              10)));
+                                            sf::Vector2f(200.f, 0.f),
+                                            sf::Vector2f(0.01f, 0.01f),
+                                            10)));
 }
 
 void Controller::Run()
@@ -255,6 +256,12 @@ void Controller::boutonSourisRelache()
         Batiment *batimentSousSouris = getBatimentSousSouris();
         if (batimentSousSouris == nullptr)
             return;
+
+        uint idSrc = _batimentSelect->getId();
+        uint idDest = batimentSousSouris->getId();
+        uint nbSoldatsDispo = _batimentSelect->getReserveInterne();
+        _batimentSelect->setNbSoldatsALiberer(nbSoldatsDispo / 3,
+                                              idSrc, idDest, _map);
     }
 }
 
@@ -289,8 +296,26 @@ void Controller::UpdateSoldats()
 
 void Controller::UpdateBatiments()
 {
-    for (auto &bat : _allBatiments)
+    for (Batiment &bat : _allBatiments)
     {
         bat.Update();
+        if (bat.doitLibererSoldats())
+        {
+            bat.libereLigneSoldat();
+            //     switch (bat.getType())
+            //     {
+            //     case Entite::Type::Magasin:
+            //         dynamic_cast<Magasin &>(bat).libereLigneSoldat();
+            //         break;
+            //     case Entite::Type::Igloo:
+            //         dynamic_cast<Magasin &>(bat).libereLigneSoldat();
+            //         break;
+            //     case Entite::Type::Glacier:
+            //         dynamic_cast<Magasin &>(bat).libereLigneSoldat();
+            //         break;
+            //     default:
+            //         break;
+            //     }
+        }
     }
 }

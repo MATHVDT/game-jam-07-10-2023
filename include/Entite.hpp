@@ -68,6 +68,7 @@ public:
     const sf::Vector2f &getScale() const;
     const Entite::Type getType() const;
     const Entite::Faction getFaction() const;
+    const uint getId() const;
 
     virtual void Update() = 0;
 };
@@ -84,5 +85,6 @@ inline const sf::Sprite &Entite::getSprite() const { return _sprite; }
 inline const sf::Vector2f &Entite::getScale() const { return _scale; }
 inline const Entite::Type Entite ::getType() const { return _type; }
 inline const Entite::Faction Entite ::getFaction() const { return _faction; }
+inline const uint Entite::getId() const { return _entiteId; }
 
 #endif

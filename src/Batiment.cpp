@@ -57,7 +57,7 @@ bool Batiment::setNbSoldatsALiberer(uint nbSoldats,
   }
 }
 
-std::list<Soldat *> *Batiment::libereLigneSoldat(uint nbSoldats, Entite::Type typeSoldat)
+std::list<Soldat *> *Batiment::libereLigneSoldat(Entite::Type typeSoldat)
 {
   // Libère 3 soldats
   if (_flowDeltaFrame > 3.f)
@@ -65,27 +65,27 @@ std::list<Soldat *> *Batiment::libereLigneSoldat(uint nbSoldats, Entite::Type ty
     // _reserveInterne += (_reserveInterne < _maxSize ? 1 : _maxSize);
     _flowDeltaFrame = 0;
 
-    if (_reserveInterne > nbSoldats)
+    if (_reserveInterne > 3)
     {
       std::list<Soldat *> *list = new std::list<Soldat *>();
 
-      int offset;
-      if (nbSoldats == 0)
-        return;
-      else if (nbSoldats == 1)
-        offset = 0;
-      else if (nbSoldats == 2)
-        offset = 15;
-      else if (offset == 3)
-        offset = 20;
+      int offset = 20;
+      // if (nbSoldats == 0)
+      //   return;
+      // else if (nbSoldats == 1)
+      //   offset = 0;
+      // else if (nbSoldats == 2)
+      //   offset = 15;
+      // else if (offset == 3)
+      //   offset = 20;
 
-      for (int i = -1; i < nbSoldats - 1; i += 1 + ((nbSoldats - 1) % 2))
+      for (int i = -1; i < 3 - 1; i++)
       {
         // i*offset
         // list->push_back(new Soldat())
       }
 
-      _reserveInterne -= nbSoldats;
+      _reserveInterne -= 3;
       if (_reserveInterne <= 0)
       {
         // Reset pathfinding

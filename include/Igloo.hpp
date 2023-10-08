@@ -14,7 +14,7 @@ public:
           uint reserveInitiale);
     ~Igloo();
 
-    std::list<Soldat *> *libereLigneSoldat(uint nbSoldats);
+    virtual std::list<Soldat *> *libereLigneSoldat() override;
 };
 
 #endif

@@ -54,8 +54,10 @@ public:
                               Map &map);
     bool doitLibererSoldats() const;
 
+    virtual std::list<Soldat *> *libereLigneSoldat() { return nullptr; }
+
 protected:
-    std::list<Soldat *> *libereLigneSoldat(uint nbSoldats, Entite::Type typeSoldat);
+    std::list<Soldat *> *libereLigneSoldat(Entite::Type typeSoldat);
 };
 
 /****************************************************/
