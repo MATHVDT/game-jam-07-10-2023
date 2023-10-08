@@ -53,8 +53,9 @@ public:
                               uint idSource, uint idDest,
                               Map &map);
     bool doitLibererSoldats() const;
-
     virtual std::list<Soldat *> *libereLigneSoldat() { return nullptr; }
+
+    bool prendreDegat(Entite::Faction factionAttaquant);
 
 protected:
     std::list<Soldat *> *libereLigneSoldat(Entite::Type typeSoldat);

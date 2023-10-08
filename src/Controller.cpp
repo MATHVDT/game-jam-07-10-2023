@@ -16,6 +16,10 @@ Controller::Controller()
 
 Controller::~Controller()
 {
+    for (auto *s : _allSoldats)
+    {
+        delete s;
+    }
     _fenetre.close();
 }
 
@@ -83,9 +87,9 @@ void Controller::dessinerFenetre()
 
         dessiner(text);
     }
-    for (Soldat &soldat : _allSoldats)
+    for (Soldat *soldat : _allSoldats)
     {
-        dessiner(soldat.getSprite());
+        dessiner(soldat->getSprite());
     }
     dessinerOverlayBatiment();
 }
@@ -145,10 +149,9 @@ void Controller::InitGame()
 
     Map map = Map(positions, links);
 
-    Soldat soldat = Soldat(1, 100, 2, map, Entite::Faction::Bleu, Entite::Type::PingouinBleu, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.008f, 0.008f));
+    Soldat *soldat = new Soldat(1, 100, 2, map, Entite::Faction::Bleu, Entite::Type::PingouinBleu, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.008f, 0.008f));
     _allSoldats.push_back(soldat);
-    // std::string path = "ressources/Bleu_luge.png";
-    // std::string path = "/home/mathvdt/game-jam-07-10-2023/ressources/test.png";
+
     _allBatiments.push_back(std::move(Igloo(Entite::Faction::Bleu,
                                             sf::Vector2f(0.f, 0.f),
                                             sf::Vector2f(0.01f, 0.01f),
@@ -280,7 +283,7 @@ void Controller::LanceAttaque(Batiment *source, Batiment *destination)
 
 void Controller::UpdateEntites()
 {
-    // GestionCollisionEntites();
+    GestionCollisionEntites();
 
     UpdateBatiments();
     UpdateSoldats();
@@ -288,10 +291,16 @@ void Controller::UpdateEntites()
 
 void Controller::UpdateSoldats()
 {
-    for (auto it = _allSoldats.begin(); it < _allSoldats.end(); it++)
+    for (auto *s : _allSoldats)
     {
-        it->Update();
+        if (s == nullptr)
+            _allSoldats.remove(s);
+        s->Update();
     }
+    // for (auto it = _allSoldats.begin(); it < _allSoldats.end(); it++)
+    // {
+    //     (*it)->Update();
+    // }
 }
 
 void Controller::UpdateBatiments()
@@ -316,6 +325,51 @@ void Controller::UpdateBatiments()
             //     default:
             //         break;
             //     }
+        }
+    }
+}
+
+void Controller::GestionCollisionEntites()
+{
+    // Soldat - Soldat
+    for (auto *s : _allSoldats)
+    {
+        for (auto *autreSoldat : _allSoldats)
+        {
+            if (s->getId() == autreSoldat->getId() ||
+                s->getFaction() == autreSoldat->getFaction())
+                continue;
+            sf::FloatRect r1 = s->getGlobalBounds();
+            sf::FloatRect r2 = autreSoldat->getGlobalBounds();
+            sf::FloatRect rIntersect;
+            if (r1.intersects(r2))
+            {
+                Soldat *tmpSoldat = s;
+                _allSoldats.remove(s);
+                delete tmpSoldat;
+                tmpSoldat = autreSoldat;
+                _allSoldats.remove(autreSoldat);
+                delete tmpSoldat;
+                break;
+            }
+        }
+    }
+
+    for (auto *s : _allSoldats)
+    {
+        for (Batiment &bat : _allBatiments)
+        {
+            if (s->getFaction() == bat.getFaction())
+                continue;
+            sf::FloatRect r1 = s->getGlobalBounds();
+            sf::FloatRect r2 = bat.getGlobalBounds();
+            sf::FloatRect rIntersect;
+            if (r1.intersects(r2))
+            {
+                bat.prendreDegat(s->getFaction());
+                delete s;
+                break;
+            }
         }
     }
 }

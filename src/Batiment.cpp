@@ -105,3 +105,18 @@ std::list<Soldat *> *Batiment::libereLigneSoldat(Entite::Type typeSoldat)
     _flowDeltaFrame += _flowRate;
   }
 }
+
+bool Batiment::prendreDegat(Entite::Faction factionAttaquant)
+{
+  if (_reserveInterne == 0)
+  {
+    _faction = factionAttaquant;
+    _reserveInterne++;
+    return true;
+  }
+  else
+  {
+    _reserveInterne--;
+    return false;
+  }
+}

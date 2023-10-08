@@ -47,7 +47,7 @@ private:
     Map _map;
 
     std::vector<Batiment> _allBatiments;
-    std::vector<Soldat> _allSoldats;
+    std::list<Soldat *> _allSoldats;
     std::list<Batiment *> _playerBatiments;
     std::list<Batiment *> _EnemyBatiments;
 
@@ -82,7 +82,7 @@ public:
     void UpdateBatiments();
     void UpdateSoldats();
 
-    // void GestionCollisionEntites();
+    void GestionCollisionEntites();
 
 private:
     Controller();
