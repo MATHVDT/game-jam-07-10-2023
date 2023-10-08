@@ -13,6 +13,8 @@ public:
           const sf::Vector2f &scale,
           uint reserveInitiale);
     ~Igloo();
+
+    std::list<Soldat *> *libereLigneSoldat(uint nbSoldats);
 };
 
 #endif

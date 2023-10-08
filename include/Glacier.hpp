@@ -13,6 +13,8 @@ public:
             const sf::Vector2f &scale,
             uint reserveInitiale);
     ~Glacier();
+
+    std::list<Soldat *> *libereLigneSoldat(uint nbSoldats);
 };
 
 #endif
