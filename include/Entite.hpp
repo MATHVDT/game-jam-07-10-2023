@@ -17,7 +17,7 @@ namespace fs = std::filesystem;
 class Entite
 {
 public:
-    enum class Type : uint
+    enum class Type 
     {
         PingouinBleu,
         LugeurBleu,
@@ -29,21 +29,32 @@ public:
         Glacier, // Batiment défensive
     };
 
+    enum class Faction : uint
+    {
+        Bleu,
+        Rouge,
+        Neutre,
+    };
+
 private: // static
+    static uint compteurEntiteId;
     static sf::Texture _textures[NB_TYPE_ENTITE];
     static std::map<Type, std::string> pathTextures;
 
 public: // static
     static void chargerTextures();
-    // void dechargerTextures();
 
 protected:
+    uint _entiteId;
+    Entite::Faction _faction;
     Entite::Type _type;
     sf::Sprite _sprite;
     sf::Vector2f _scale;
 
 public:
-    Entite(Entite::Type type, const sf::Vector2f &scale);
+    Entite(Entite::Faction faction, Entite::Type type,
+           const sf::Vector2f &positionInitiale,
+           const sf::Vector2f &scale);
     ~Entite();
 
     // Position
@@ -53,11 +64,11 @@ public:
 
     sf::FloatRect getGlobalBounds() const;
     const sf::Sprite &getSprite() const;
+    const sf::Vector2f &getScale() const;
+    const Entite::Type getType() const;
+    const Entite::Faction getFaction() const;
 
     virtual void Update() = 0;
-
-private:
-    bool chargerTexture(std::string pathTexture);
 };
 
 /****************************************************/
@@ -69,5 +80,8 @@ inline void Entite::move(const sf::Vector2f &offset) { _sprite.move(offset); }
 
 inline sf::FloatRect Entite::getGlobalBounds() const { return _sprite.getGlobalBounds(); }
 inline const sf::Sprite &Entite::getSprite() const { return _sprite; }
+inline const sf::Vector2f &Entite::getScale() const { return _scale; }
+inline const Entite::Type Entite ::getType() const { return _type; }
+inline const Entite::Faction Entite ::getFaction() const { return _faction; }
 
 #endif

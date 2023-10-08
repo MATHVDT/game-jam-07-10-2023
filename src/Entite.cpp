@@ -1,8 +1,9 @@
 #include "Entite.hpp"
-
 /****************************************************/
 /*                    Static                        */
 /****************************************************/
+uint Entite::compteurEntiteId = 0;
+
 sf::Texture Entite::_textures[NB_TYPE_ENTITE];
 std::map<Entite::Type, std::string> Entite::pathTextures = {
     {Type::PingouinBleu, "ressources/Bleu_normal.png"},
@@ -20,7 +21,6 @@ void Entite::chargerTextures()
     {
         if (fs::exists(pair.second))
         {
-            // _textures[static_cast<uint>(pair.first)] = new sf::Texture();
             if (!_textures[static_cast<uint>(pair.first)].loadFromFile(pair.second))
                 std::cout << "Erreur dans le chargement de la texture " << pair.second << " dans le sprite" << std::endl;
         }
@@ -31,28 +31,35 @@ void Entite::chargerTextures()
     }
 }
 
-// void Entite ::dechargerTextures()
-// {
-//     // for (auto text : _textures)
-//     //     delete text;
-// }
-
 /****************************************************/
-Entite::Entite(Entite::Type type, const sf::Vector2f &scale)
-    : _type(type),
-      _sprite(),
-      _scale(scale)
+/*                 Constructeur                     */
+/****************************************************/
+Entite::Entite(Entite::Faction faction, Entite::Type type,
+               const sf::Vector2f &positionInitiale,
+               const sf::Vector2f &scale)
+    : _entiteId(++compteurEntiteId),
+      _faction(faction),
+      _type(type),
+      _sprite(), _scale(scale)
 {
     _sprite.setTexture(_textures[static_cast<uint>(type)]);
-    _sprite.setPosition(0, 0);
+    _sprite.setPosition(positionInitiale);
     _sprite.setScale(_scale);
+    switch (_faction)
+    {
+    case Faction::Bleu:
+        _sprite.setColor(sf::Color(0, 0, 255));
+        break;
+    case Faction::Rouge:
+        _sprite.setColor(sf::Color(255, 0, 0));
+        break;
+    case Faction::Neutre:
+        _sprite.setColor(sf::Color(128, 128, 128));
+        break;
+    default:
+
+        break;
+    }
 }
 
-Entite::~Entite()
-{
-    // delete _texture;
-}
-
-bool Entite::chargerTexture(std::string pathTexture)
-{
-}
+Entite::~Entite() {}

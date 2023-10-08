@@ -9,7 +9,9 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-#include "Batiment.hpp"
+#include "Magasin.hpp"
+#include "Igloo.hpp"
+#include "Glacier.hpp"
 
 class Controller
 {
@@ -46,10 +48,17 @@ public:
     void InitFenetre(uint largeurFenetre, uint hauteurFenetre);
     void dessiner(const sf::Drawable &dessinable);
     void dessiner(const sf::Drawable *dessinable);
+    void dessinerOverlayBatiment();
     void dessinerFenetre();
     void afficherFenetre();
 
+    // Event souris
+    Batiment *getBatimentSousSouris();
     void boutonSourisPresse();
+    void boutonSourisRelache();
+
+    // Gestion...
+    void LanceAttaque(Batiment *source, Batiment *destination);
 
 private:
     Controller();
