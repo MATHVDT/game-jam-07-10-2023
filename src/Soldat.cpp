@@ -37,10 +37,15 @@ void Soldat::Avancer(float time)
         destination.erase(destination.begin());
         if (!destination.empty())
         {
-            speed = destination[0] - position;
-            float temp = std::sqrt(pow(speed.x,2)+pow(speed.y,2));
-            speed.x = speed.x / temp * SPEED;
-            speed.y = speed.y / temp * SPEED;
+            SetNewSpeed();
+            position = position + speed * time;
         }
     }
+}
+
+void Soldat::SetNewSpeed() {
+    speed = destination[0] - position;
+    float temp = std::sqrt(pow(speed.x,2)+pow(speed.y,2));
+    speed.x = speed.x / temp * speed_coeff;
+    speed.y = speed.y / temp * speed_coeff;
 }
